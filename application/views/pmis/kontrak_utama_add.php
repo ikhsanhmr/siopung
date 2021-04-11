@@ -1,0 +1,170 @@
+			<!-- /section:basics/sidebar -->
+			<div class="main-content">
+				<div class="main-content-inner">
+					<!-- #section:basics/content.breadcrumbs -->
+					<div class="breadcrumbs" id="breadcrumbs">
+						<script type="text/javascript">
+							try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
+						</script>
+
+						<ul class="breadcrumb">
+							<li>
+								<i class="ace-icon fa fa-home home-icon"></i>
+								<a href="#">Home</a>
+							</li>
+							<li class="active">Add Kontrak Utama</li>
+						</ul><!-- /.breadcrumb -->
+
+					
+						<!-- /section:basics/content.searchbox -->
+					</div>
+
+					<!-- /section:basics/content.breadcrumbs -->
+					<div class="page-content">
+						<!-- #section:settings.box -->
+						
+						<!-- /section:settings.box -->
+						<div class="page-header">
+							<h1>
+								Add Kontrak Utama
+								<small>
+									<i class="ace-icon fa fa-angle-double-right"></i>
+									Tambah Data Kontrak Utama
+								</small>
+							</h1>
+						</div><!-- /.page-header -->
+
+						<div class="row">
+							<div class="col-xs-12">
+								<!-- PAGE CONTENT BEGINS -->
+								
+<div class="box-body">
+                <form class="form-horizontal" method="post" action="<?php echo base_url(); ?>pmis/aksi_kontrak_utama_add?id_project=<?php echo $_GET['id_project'];?>" enctype="multipart/form-data">
+				
+				<input type="hidden" name="id_project" value="<?php echo $_GET['id_project']; ?>">
+                    <div class="box-body">
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label for="nama_kontrak_utama" class="col-sm-3 control-label">Nama Kontrak Utama</label>
+                                <div class="col-sm-5">
+								 <input type="text" class="form-control" id="nama_kontrak_utama" name="nama_kontrak_utama" required/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label for="pelaksana" class="col-sm-3 control-label">Pelaksana</label>
+                                <div class="col-sm-5">
+								 <input type="text" class="form-control" id="pelaksana" name="pelaksana" required/>
+                                </div>
+                            </div>
+                        </div>
+                         
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label for="nomor_kontrak" class="col-sm-3 control-label">Nomor Kontrak</label>
+                                <div class="col-sm-5">
+								 <input type="text" class="form-control" id="nomor_kontrak" name="nomor_kontrak" />
+                                </div>
+                            </div>
+                        </div>
+						
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label for="jenis_kontrak" class="col-sm-3 control-label">Jenis Kontrak</label>
+                                <div class="col-sm-5">
+								 <input type="text" class="form-control" id="jenis_kontrak" name="jenis_kontrak" required/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-lg-10">
+                            <div class="form-group" >
+							<label for="tanggal_kontrak" class="col-sm-3 control-label">Tanggal Kontrak</label>
+                                <div class="col-sm-5">
+															
+															<div class="input-group">
+															  
+															  <input name="tanggal_kontrak"  class="form-control date-picker" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy" />
+															  <span class="input-group-addon">
+																<i class="fa fa-calendar-o"></i>
+															  </span>
+															</div>
+														  </div>
+							
+								</div>
+                        </div>
+						<div class="col-lg-10">
+                            <div class="form-group">
+                                <label for="effective_date" class="col-sm-3 control-label">Effective Date</label>
+                                <div class="col-sm-5">
+                                 									<div class="input-group">
+																	<input class="form-control date-picker" name="effective_date" id="id-date-picker-1" type="text" data-date-format="dd-mm-yyyy" />
+																	<span class="input-group-addon">
+																		<i class="fa fa-calendar-o"></i>
+																	</span>
+																</div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <label for="nilai_kontrak" class="col-sm-3 control-label">Nilai Kontrak</label>
+                                <div class="col-sm-5">
+								 <input type="text" class="form-control" id="nilai_kontrak" name="nilai_kontrak" required/>
+                                </div>
+                            </div>
+                        </div>
+						
+                        <?php	
+						$kali = $mesin['jumlah_mesin'];
+															for($kata=1;$kata<=$kali;$kata++)	 { 
+						
+						echo '<div class="col-lg-10">
+							<div class="form-group">
+								<label for="tanggal_berakhir'.$kata.'" class="col-sm-3 control-label">Tanggal COD (Unit '.$kata.')</label>
+								<div class="col-sm-5">
+																	<div class="input-group">
+																	<input name="tanggal_berakhir'.$kata.'" id="id-date-picker-1" class="form-control date-picker" type="text" data-date-format="dd-mm-yyyy" />
+																	<span class="input-group-addon">
+																		<i class="fa fa-calendar-o"></i>
+																	</span>
+																</div>
+								</div>
+							</div>
+						</div>';
+						
+							
+							
+						
+						}
+						?> 
+						
+                       
+
+														
+
+														
+                        
+                       
+                    </div>
+                    <div class="box-footer">
+                        <div class="pull-right">
+                            <a href="<?php echo base_url(); ?>pmis/kontrak_utama_view?id_project=<?php echo $_GET['id_project']; ?>" class="btn btn-danger">Kembali</a>
+                            <button type="reset" class="btn btn-warning">Ulangi</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+								
+
+								<!-- PAGE CONTENT ENDS -->
+							</div><!-- /.col -->
+						</div><!-- /.row -->
+					</div><!-- /.page-content -->
+				</div>
+			</div><!-- /.main-content -->
