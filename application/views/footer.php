@@ -134,28 +134,22 @@
 
 <script type="text/javascript">
 	jQuery(function($) {
-
-
-
 		//initiate dataTables plugin
 		var oTable1 =
-			$('#dynamic-table')
-			//.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
-			.dataTable({
-				//bAutoWidth: false,
-
-				//"aaSorting": [],
-				//,
-				//"sScrollY": "200px",
-				//"bPaginate": false,
-
-				"sScrollX": "100%",
-				//"sScrollXInner": "120%",
-				//"bScrollCollapse": true,
-				//Note: if you are applying horizontal scrolling (sScrollX) on a ".table-bordered"
-				//you may want to wrap the table inside a "div.dataTables_borderWrap" element
-
-				//"iDisplayLength": 50
+			$('#dynamic-table').DataTable({
+				"processing": true, //Feature control the processing indicator.
+				"serverSide": true, //Feature control DataTables' server-side processing mode.
+				"order": [], //Initial no order.
+				"ajax": {
+					"url": "<?php echo site_url('pmis/ajax_list_last_login') ?>",
+					"type": "POST",
+				},
+				"searching": true,
+				//Set column definition initialisation properties.
+				"columnDefs": [{
+					"targets": [0], //first column / numbering column
+					"orderable": false, //set not orderable
+				}, ],
 			});
 		//oTable1.fnAdjustColumnSizing();
 

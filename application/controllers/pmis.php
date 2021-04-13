@@ -16,6 +16,7 @@ class pmis extends CI_Controller
 		$this->load->library(array('form_validation', 'session'));
 		$this->load->model(array('pmis_model'));
 		$this->load->model(array('activity_model'));
+		$this->load->model(array('last_login_model'));
 	}
 
 	//Login        
@@ -472,7 +473,7 @@ class pmis extends CI_Controller
 			$data['menu8_pln'] = $this->pmis_model->get_module8_pln();
 			$data['menu8_ipp'] = $this->pmis_model->get_module8_ipp();
 			$data['menu8_unallocated'] = $this->pmis_model->get_module8_unallocated();
-			$data['last_login'] = $this->pmis_model->last_login_view();
+			// $data['last_login'] = $this->pmis_model->last_login_view();
 
 			$this->data['title'] = 'Beranda :: ';
 			$this->load->view('header', $this->data);
@@ -480,6 +481,34 @@ class pmis extends CI_Controller
 			$this->load->view('pmis/last_login_view', $data);
 			$this->load->view('footer');
 		}
+	}
+
+	public function ajax_list_last_login()
+	{
+		$list = $this->last_login_model->get_datatables();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $item) {
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $item->nama_upp;
+			$row[] = $item->nama_admin;
+			$row[] = date('d-M-Y H:i', strtotime($item->last_login));
+			$row[] = $item->ip_last_login;
+			$row[] = $item->browser;
+
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->last_login_model->count_all(),
+			"recordsFiltered" => $this->last_login_model->count_filtered(),
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
 	}
 
 	//User

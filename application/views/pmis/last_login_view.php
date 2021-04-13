@@ -60,60 +60,10 @@
 									<th>Last Login</th>
 									<th>IP Address</th>
 									<th>Browser</th>
-
-
 								</tr>
 							</thead>
-
-							<?php
-							$no = 1;
-							?>
-							<tbody>
-
-								<?php foreach ($last_login->result_array() as $data) { ?>
-									<tr>
-										<td class="center">
-											<?php echo $no; ?>
-										</td>
-										<td>
-											<?php echo $data['nama_upp']; ?>
-										</td>
-										<td>
-
-											<?php echo $data['nama_admin']; ?>
-										</td>
-
-										<td><?php echo date('d-M-Y H:i:s', strtotime($data['last_login'])); ?></td>
-										<td>
-											<?php echo $data['ip_last_login']; ?>
-										</td>
-										<td>
-											<?php echo $data['browser']; ?>
-										</td>
-
-
-									</tr>
-
-
-
-
-
-
-								<?php
-									$no++;
-								}
-
-								?>
-
-							</tbody>
 						</table>
-
-
 					</div>
-
-
-
-
 					<!-- PAGE CONTENT ENDS -->
 				</div><!-- /.col -->
 			</div><!-- /.row -->

@@ -49,7 +49,7 @@
 					<!-- div.dataTables_borderWrap -->
 					<div>
 
-						<table id="table" class="display" style="width:100%">
+						<table id="table-activity" class="display" style="width:100%">
 							<thead>
 								<tr>
 									<th>No</th>
@@ -80,7 +80,7 @@
 
 	$(document).ready(function() {
 		//datatables
-		table = $('#table').DataTable({
+		table = $('#table-activity').DataTable({
 
 			"processing": true, //Feature control the processing indicator.
 			"serverSide": true, //Feature control DataTables' server-side processing mode.
@@ -91,7 +91,7 @@
 				"url": "<?php echo site_url('pmis/ajax_list') ?>",
 				"type": "POST",
 			},
-			"searching": false,
+			"searching": true,
 
 			//Set column definition initialisation properties.
 			"columnDefs": [{
