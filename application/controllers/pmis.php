@@ -17,6 +17,8 @@ class pmis extends CI_Controller
 		$this->load->model(array('pmis_model'));
 		$this->load->model(array('activity_model'));
 		$this->load->model(array('last_login_model'));
+		$this->load->model(array('user_model'));
+		$this->load->model(array('project_model'));
 	}
 
 	//Login        
@@ -551,6 +553,66 @@ class pmis extends CI_Controller
 		}
 	}
 
+	// TODO: Kita akan lanjutkan
+	public function ajax_list_user()
+	{
+		$list = $this->user_model->get_datatables();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $item) {
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $item->nama_admin;
+			$row[] = $item->username;
+			$row[] = $item->password;
+			$row[] = $item->email;
+			$row[] = '<div class="hidden-sm hidden-xs action-buttons">
+			<a class="green" href="' .  base_url() . 'pmis/user_edit?id_user=' . $item->id_user . '">
+				<i class="ace-icon fa fa-pencil bigger-130"></i>
+			</a>
+			<a class="red" href="' . base_url() . 'pmis/user_delete?id_user=' . $item->id_user . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+				<i class="ace-icon fa fa-trash-o bigger-130"></i>
+			</a>
+		</div>
+		<div class="hidden-md hidden-lg">
+		<div class="inline pos-rel">
+			<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+				<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+			</button>
+			<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+				<li>
+					<a href="' .  base_url() . 'pmis/user_edit?id_user=' . $item->id_user . '" class="tooltip-success" data-rel="tooltip" title="Edit">
+						<span class="green">
+							<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+						</span>
+					</a>
+				</li>
+				<li>
+					<a href="' . base_url() . 'pmis/user_delete?id_user=' . $item->id_user . '" class="tooltip-error" data-rel="tooltip" title="Delete" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+						<span class="red">
+							<i class="ace-icon fa fa-trash-o bigger-120"></i>
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+		';
+
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->user_model->count_all(),
+			"recordsFiltered" => $this->user_model->count_filtered(),
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
+	}
+
 	public function user_add()
 	{
 		if ($this->session->userdata('status') == 2) {
@@ -918,6 +980,124 @@ class pmis extends CI_Controller
 			$this->load->view('pmis/project_view', $data);
 			$this->load->view('footer_project');
 		}
+	}
+
+	public function ajax_list_project()
+	{
+		$list = $this->project_model->get_datatables();
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $item) {
+
+			if ($item->fase_project == 1) {
+				$fase = 'Inisiasi';
+			} else if ($item->fase_project == 2) {
+				$fase = 'Perencanaan';
+			} else if ($item->fase_project == 3) {
+				$fase = 'Pra Pelaksanaan';
+			} else if ($item->fase_project == 4) {
+				$fase = 'Pelaksanaan';
+			} else if ($item->fase_project == 5) {
+				$fase = 'Penyelesaian';
+			} else {
+				$fase = 'Data Belum Di isi!';
+			}
+
+			if ($item->program_project == 1) {
+				$program = 'Regular';
+			} else if ($item->program_project == 2) {
+				$program = 'FTP I';
+			} else if ($item->program_project == 3) {
+				$program = 'FTP II';
+			} else if ($item->program_project == 4) {
+				$program = '35.000 MW';
+			} else if ($item->program_project == 5) {
+				$program = '-';
+			} else {
+				$program = 'Data Belum Di isi!';
+			}
+
+
+			if ($item->provinsi == 1) {
+				$provinsi = 'Aceh';
+			} else if ($item->provinsi == 2) {
+				$provinsi = 'Sumatera Utara';
+			} else if ($item->provinsi == 3) {
+				$provinsi = 'Riau';
+			} else if ($item->provinsi == 4) {
+				$provinsi = 'Sumatera Barat';
+			} else if ($item->provinsi == 5) {
+				$provinsi = 'Kepulauan Riau';
+			} else if ($item->provinsi == 6) {
+				$provinsi = 'Jambi';
+			} else if ($item->provinsi == 7) {
+				$provinsi = 'Sumatera Selatan';
+			} else if ($item->provinsi == 8) {
+				$provinsi = 'Bengkulu';
+			} else if ($item->provinsi == 9) {
+				$provinsi = 'Bangka Belitung';
+			} else if ($item->provinsi == 10) {
+				$provinsi = 'Lampung';
+			} else {
+				$provinsi = 'Data Belum Di isi!';
+			}
+
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $item->kode_project;
+			$row[] = 	'<a href="' . base_url() . 'pmis/general_information_view?id_project=' . $item->id_project . '">' . $item->nama_project . '</a>';
+			$row[] = $program;
+			$row[] = $item->ruptl;
+			$row[] = $provinsi;
+			$row[] = $fase;
+			$row[] = $item->lokasi_project;
+			$row[] = $item->jumlah_mesin . ' Unit';
+			$row[] = '<div class="hidden-sm hidden-xs action-buttons">
+			<a class="green" href="' . base_url() . 'pmis/project_edit?id_project=' . $item->id_project . '">
+				<i class="ace-icon fa fa-pencil bigger-130"></i>
+			</a>
+
+			<a class="red" href="' . base_url() . 'pmis/project_delete?id_project=' . $item->id_project . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+				<i class="ace-icon fa fa-trash-o bigger-130"></i>
+			</a>
+		</div>
+		<div class="hidden-md hidden-lg">
+		<div class="inline pos-rel">
+			<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+				<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+			</button>
+
+			<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+				<li>
+					<a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+						<span class="green">
+							<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+						</span>
+					</a>
+				</li>
+				<li>
+					<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+						<span class="red">
+							<i class="ace-icon fa fa-trash-o bigger-120"></i>
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>';
+
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->activity_model->count_all(),
+			"recordsFiltered" => $this->activity_model->count_filtered(),
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
 	}
 
 	public function project_add()
