@@ -987,6 +987,7 @@ class pmis extends CI_Controller
 		$list = $this->project_model->get_datatables();
 		$data = array();
 		$no = $_POST['start'];
+
 		foreach ($list as $item) {
 
 			if ($item->fase_project == 1) {
@@ -1092,10 +1093,11 @@ class pmis extends CI_Controller
 
 		$output = array(
 			"draw" => $_POST['draw'],
-			"recordsTotal" => $this->activity_model->count_all(),
-			"recordsFiltered" => $this->activity_model->count_filtered(),
+			"recordsTotal" => $this->project_model->count_all(),
+			"recordsFiltered" => $this->project_model->count_filtered(),
 			"data" => $data,
 		);
+
 		//output to json format
 		echo json_encode($output);
 	}

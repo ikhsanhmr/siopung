@@ -130,7 +130,7 @@
 									if ($dapat_status['status'] == 4) { ?>
 
 									<?php } else { ?>
-										<th>Actions</th>
+										<th class="center">Actions</th>
 									<?php } ?>
 
 								</tr>
