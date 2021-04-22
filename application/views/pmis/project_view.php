@@ -176,13 +176,16 @@
 			"columnDefs": [{
 				"targets": [0], //first column / numbering column
 				"orderable": false, //set not orderable
-			}, ],
+			}, {
+				"targets": [9], //first column / numbering column
+				"orderable": false, //set not orderable
+			}],
 
 		});
 
 		$('#submit_search').on('click', function() {
 			event.preventDefault();
-
+			var tableNew = $('#dynamic-table-project')
 			$.ajax({
 				url: "<?= site_url('pmis/ajax_list_filter_search') ?>",
 				dataType: 'JSON',
@@ -197,16 +200,41 @@
 					console.log(data_return);
 
 					// destroy the DataTable
-					table.dataTable().fnDestroy();
+					tableNew.dataTable().fnDestroy();
 					// clear the table body
-					table.find('tbody').empty();
-					table.DataTable({
+					tableNew.find('tbody').empty();
+					tableNew.DataTable({
 						data: data_return,
-						//TODO: Sumber: https://applerinquest.com/how-to-filter-data-in-datatable-using-ajax-in-codeigniter/ 
-						column: [{
-							"data": "id",
-
-						}]
+						columns: [{
+							"data": 'no'
+						}, {
+							"data": "kode_project"
+						}, {
+							"data": "nama_project"
+						}, {
+							"data": "program_project"
+						}, {
+							"data": "ruptl"
+						}, {
+							"data": "provinsi"
+						}, {
+							"data": "fase_project"
+						}, {
+							"data": "lokasi_project"
+						}, {
+							"data": "jumlah_mesin"
+						}, {
+							"data": "actions"
+						}],
+						columnDefs: [{
+								"targets": [0],
+								"orderable": false
+							},
+							{
+								"targets": [9], //first column / numbering column
+								"orderable": false, //set not orderable
+							}
+						]
 					})
 
 				}

@@ -553,7 +553,6 @@ class pmis extends CI_Controller
 		}
 	}
 
-	// TODO: Kita akan lanjutkan
 	public function ajax_list_user()
 	{
 		$list = $this->user_model->get_datatables();
@@ -1105,8 +1104,110 @@ class pmis extends CI_Controller
 	public function ajax_list_filter_search()
 	{
 		$result = $this->project_model->get_project_filter();
+		$data = array();
+		if ($result->num_rows() > 0) {
+			foreach ($result->result_array() as $key => $row) {
+				$row['no'] = $key + 1;
 
-		echo json_encode($result);
+
+				if ($row['fase_project'] == 1) {
+					$row['fase_project'] = 'Inisiasi';
+				} else if ($row['fase_project'] == 2) {
+					$row['fase_project'] = 'Perencanaan';
+				} else if ($row['fase_project'] == 3) {
+					$row['fase_project'] = 'Pra Pelaksanaan';
+				} else if ($row['fase_project'] == 4) {
+					$row['fase_project'] = 'Pelaksanaan';
+				} else if ($row['fase_project'] == 5) {
+					$row['fase_project'] = 'Penyelesaian';
+				} else {
+					$row['fase_project'] = 'Data Belum Di isi!';
+				}
+
+				if ($row['program_project'] == 1) {
+					$row['program_project'] = 'Regular';
+				} else if ($row['program_project'] == 2) {
+					$row['program_project'] = 'FTP I';
+				} else if ($row['program_project'] == 3) {
+					$row['program_project'] = 'FTP II';
+				} else if ($row['program_project'] == 4) {
+					$row['program_project'] = '35.000 MW';
+				} else if ($row['program_project'] == 5) {
+					$row['program_project'] = '-';
+				} else {
+					$row['program_project'] = 'Data Belum Di isi!';
+				}
+
+
+				if ($row['provinsi'] == 1) {
+					$row['provinsi'] = 'Aceh';
+				} else if ($row['provinsi'] == 2) {
+					$row['provinsi'] = 'Sumatera Utara';
+				} else if ($row['provinsi'] == 3) {
+					$row['provinsi'] = 'Riau';
+				} else if ($row['provinsi'] == 4) {
+					$row['provinsi'] = 'Sumatera Barat';
+				} else if ($row['provinsi'] == 5) {
+					$row['provinsi'] = 'Kepulauan Riau';
+				} else if ($row['provinsi'] == 6) {
+					$row['provinsi'] = 'Jambi';
+				} else if ($row['provinsi'] == 7) {
+					$row['provinsi'] = 'Sumatera Selatan';
+				} else if ($row['provinsi'] == 8) {
+					$row['provinsi'] = 'Bengkulu';
+				} else if ($row['provinsi'] == 9) {
+					$row['provinsi'] = 'Bangka Belitung';
+				} else if ($row['provinsi'] == 10) {
+					$row['provinsi'] = 'Lampung';
+				} else {
+					$row['provinsi'] = 'Data Belum Di isi!';
+				}
+
+				$row['actions'] = '
+				<div class="hidden-sm hidden-xs action-buttons">
+			<a class="green" href="' . base_url() . 'pmis/project_edit?id_project=' . $row['id_project'] . '">
+				<i class="ace-icon fa fa-pencil bigger-130"></i>
+			</a>
+
+			<a class="red" href="' . base_url() . 'pmis/project_delete?id_project=' . $row['id_project'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+				<i class="ace-icon fa fa-trash-o bigger-130"></i>
+			</a>
+		</div>
+		<div class="hidden-md hidden-lg">
+		<div class="inline pos-rel">
+			<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+				<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+			</button>
+
+			<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+				<li>
+					<a href="' . base_url() . 'pmis/project_edit?id_project=' . $row['id_project'] . '" class="tooltip-success" data-rel="tooltip" title="Edit">
+						<span class="green">
+							<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+						</span>
+					</a>
+				</li>
+				<li>
+					<a href="' . base_url() . 'pmis/project_delete?id_project=' . $row['id_project'] . '" class="tooltip-error" data-rel="tooltip" title="Delete">
+						<span class="red">
+							<i class="ace-icon fa fa-trash-o bigger-120"></i>
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+				';
+
+				$row['jumlah_mesin'] = $row['jumlah_mesin'] . ' Unit';
+
+
+				$data[] = $row;
+			}
+		}
+
+		//output to json format
+		echo json_encode($data);
 	}
 
 	public function project_add()

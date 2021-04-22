@@ -78,10 +78,6 @@ class Project_model extends CI_Model
     $this->db->like('program_project', $this->input->post('program_project'));
     $this->db->like('provinsi', $this->input->post('provinsi'));
     $query = $this->db->get('project');
-    if ($query->num_rows > 0) {
-      return $query->result_array();
-    } else {
-      return array();
-    }
+    return $query;
   }
 }
