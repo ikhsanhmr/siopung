@@ -5,7 +5,6 @@ class Project_model extends CI_Model
 {
   var $table = 'project';
   var $column_order = array(null, 'kode_project', 'nama_project', 'program_project', 'ruptl', 'provinsi', 'fase_project', 'lokasi_project', 'jumlah_mesin', null); //set column field database for datatable orderable
-  // var $column_order = array(null, 'kode_project', 'nama_project'); //set column field database for datatable orderable
   var $column_search = array('kode_project', 'nama_project', 'program_project', 'ruptl', 'provinsi', 'fase_project', 'lokasi_project', 'jumlah_mesin'); //set column field database for datatable searchable 
   var $order = array('id_project' => 'desc'); // default order
 
@@ -70,5 +69,19 @@ class Project_model extends CI_Model
     $this->_get_datatables_query();
     $query = $this->db->get();
     return $query->num_rows();
+  }
+
+  function get_project_filter()
+  {
+    $this->db->like('kode_project', $this->input->post('kode_project'));
+    $this->db->like('ruptl', $this->input->post('ruptl'));
+    $this->db->like('program_project', $this->input->post('program_project'));
+    $this->db->like('provinsi', $this->input->post('provinsi'));
+    $query = $this->db->get('project');
+    if ($query->num_rows > 0) {
+      return $query->result_array();
+    } else {
+      return array();
+    }
   }
 }

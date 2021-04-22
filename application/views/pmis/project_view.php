@@ -37,7 +37,7 @@
 			<!-- START SEARCHING -->
 			<div class="row">
 				<div class="col-xs-12">
-					<form name="form1" method="post" action="<?php echo base_url(); ?>pmis/project_view">
+					<form name="form1" method="post" action="">
 						<div class="col-sm-3">
 							Ownership : <select class="form-control" id="kode_project" name="kode_project">
 								<option value="">--List of Ownership--</option>
@@ -89,7 +89,7 @@
 
 						<div class="col-sm-3">
 							<br>
-							<button type="submit" class="btn btn-sm btn-primary no-radius"><i class="ace-icon fa fa-search nav-search-icon"> </i>Submit</button>
+							<button type="submit" id="submit_search" class="btn btn-sm btn-primary no-radius"><i class="ace-icon fa fa-search nav-search-icon"> </i>Submit</button>
 						</div>
 					</form>
 
@@ -179,6 +179,39 @@
 			}, ],
 
 		});
+
+		$('#submit_search').on('click', function() {
+			event.preventDefault();
+
+			$.ajax({
+				url: "<?= site_url('pmis/ajax_list_filter_search') ?>",
+				dataType: 'JSON',
+				method: 'POST',
+				data: {
+					'kode_project': $('#kode_project').val(),
+					'ruptl': $('#ruptl').val(),
+					'program_project': $('#program_project').val(),
+					'provinsi': $('#provinsi').val()
+				},
+				success: function(data_return) {
+					console.log(data_return);
+
+					// destroy the DataTable
+					table.dataTable().fnDestroy();
+					// clear the table body
+					table.find('tbody').empty();
+					table.DataTable({
+						data: data_return,
+						//TODO: Sumber: https://applerinquest.com/how-to-filter-data-in-datatable-using-ajax-in-codeigniter/ 
+						column: [{
+							"data": "id",
+
+						}]
+					})
+
+				}
+			})
+		})
 
 	});
 </script>

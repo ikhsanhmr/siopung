@@ -1102,6 +1102,13 @@ class pmis extends CI_Controller
 		echo json_encode($output);
 	}
 
+	public function ajax_list_filter_search()
+	{
+		$result = $this->project_model->get_project_filter();
+
+		echo json_encode($result);
+	}
+
 	public function project_add()
 	{
 		$data['nama_admin'] = $this->session->userdata('nama_admin');
