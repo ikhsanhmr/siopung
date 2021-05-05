@@ -844,13 +844,23 @@ LIMIT 0, 6  ");
 
   function tampil_milstone($id_project)
   {
-    $get = $this->db->query("SELECT a.id_project,a.id_milstone,a.nama_milstone, 
-								a.start_plan_unit1,a.start_actual_unit1, a.finish_plan_unit1,a.finish_actual_unit1,
-								a.start_plan_unit2,a.start_actual_unit2, a.finish_plan_unit2,a.finish_actual_unit2,
-								a.start_plan_unit3,a.start_actual_unit3, a.finish_plan_unit3,a.finish_actual_unit3,
-								a.start_plan_unit4,a.start_actual_unit4, a.finish_plan_unit4,a.finish_actual_unit4,
-								a.start_plan_unit5,a.start_actual_unit5, a.finish_plan_unit5,a.finish_actual_unit5
-                               FROM milstone a where a.id_project = $id_project ");
+    $get = $this->db->query("SELECT id_project,id_milstone,nama_milstone, 
+								start_plan_unit1,start_actual_unit1, finish_plan_unit1,finish_actual_unit1,
+								start_plan_unit2,start_actual_unit2, finish_plan_unit2,finish_actual_unit2,
+								start_plan_unit3,start_actual_unit3, finish_plan_unit3,finish_actual_unit3,
+								start_plan_unit4,start_actual_unit4, finish_plan_unit4,finish_actual_unit4,
+								start_plan_unit5,start_actual_unit5, finish_plan_unit5,finish_actual_unit5,
+								start_plan_unit6,start_actual_unit6, finish_plan_unit6,finish_actual_unit6,
+								start_plan_unit7,start_actual_unit7, finish_plan_unit7,finish_actual_unit7,
+								start_plan_unit8,start_actual_unit8, finish_plan_unit8,finish_actual_unit8,
+								start_plan_unit9,start_actual_unit9, finish_plan_unit9,finish_actual_unit9,
+								start_plan_unit10,start_actual_unit10, finish_plan_unit10,finish_actual_unit10,
+								start_plan_unit11,start_actual_unit11, finish_plan_unit11,finish_actual_unit11,
+								start_plan_unit12,start_actual_unit12, finish_plan_unit12,finish_actual_unit12,
+								start_plan_unit13,start_actual_unit13, finish_plan_unit13,finish_actual_unit13,
+								start_plan_unit14,start_actual_unit14, finish_plan_unit14,finish_actual_unit14,
+								start_plan_unit15,start_actual_unit15, finish_plan_unit15,finish_actual_unit15
+                               FROM milstone where id_project = $id_project ");
     return $get;
   }
 

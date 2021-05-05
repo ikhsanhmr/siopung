@@ -19,6 +19,7 @@ class pmis extends CI_Controller
 		$this->load->model(array('last_login_model'));
 		$this->load->model(array('user_model'));
 		$this->load->model(array('project_model'));
+		$this->load->model(array('milstone_model'));
 	}
 
 	//Login        
@@ -1971,6 +1972,92 @@ class pmis extends CI_Controller
 			$this->load->view('pmis/milstone_view', $data);
 			$this->load->view('footer');
 		}
+	}
+
+	public function ajax_milstone()
+	{
+		$id_project = $this->input->get('id_project');
+		$list = $this->milstone_model->get_datatables($id_project);
+		var_dump($id_project);
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $item) {
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $item->nama_milstone;
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit1));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit1));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit1));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit1));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit2));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit2));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit2));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit2));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit3));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit3));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit3));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit3));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit4));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit4));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit4));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit4));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit5));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit5));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit5));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit5));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit6));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit6));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit6));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit6));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit7));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit7));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit7));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit7));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit8));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit8));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit8));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit8));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit9));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit9));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit9));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit9));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit10));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit10));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit10));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit10));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit11));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit11));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit11));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit11));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit12));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit12));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit12));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit12));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit13));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit13));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit13));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit13));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit14));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit14));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit14));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit14));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit15));
+			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit15));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit15));
+			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit15));
+
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->milstone_model->count_all($id_project),
+			"recordsFiltered" => $this->milstone_model->count_filtered($id_project),
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
 	}
 
 	public function milstone_add()
