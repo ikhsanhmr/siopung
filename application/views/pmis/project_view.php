@@ -128,7 +128,6 @@
 									<?php
 									//print_r($dapat_status['status']); exit;
 									if ($dapat_status['status'] == 4) { ?>
-
 									<?php } else { ?>
 										<th class="center">Actions</th>
 									<?php } ?>

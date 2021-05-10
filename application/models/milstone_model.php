@@ -4,38 +4,42 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Milstone_model extends CI_Model
 {
   var $table = 'milstone';
-  var $column_order = array(null,'nama_milstone', 
-  'start_plan_unit1','start_actual_unit1', 'finish_plan_unit1','finish_actual_unit1',
-  'start_plan_unit2','start_actual_unit2', 'finish_plan_unit2','finish_actual_unit2',
-  'start_plan_unit3','start_actual_unit3', 'finish_plan_unit3','finish_actual_unit3',
-  'start_plan_unit4','start_actual_unit4', 'finish_plan_unit4','finish_actual_unit4',
-  'start_plan_unit5','start_actual_unit5', 'finish_plan_unit5','finish_actual_unit5',
-  'start_plan_unit6','start_actual_unit6', 'finish_plan_unit6','finish_actual_unit6',
-  'start_plan_unit7','start_actual_unit7', 'finish_plan_unit7','finish_actual_unit7',
-  'start_plan_unit8','start_actual_unit8', 'finish_plan_unit8','finish_actual_unit8',
-  'start_plan_unit9','start_actual_unit9', 'finish_plan_unit9','finish_actual_unit9',
-  'start_plan_unit10','start_actual_unit10', 'finish_plan_unit10','finish_actual_unit10',
-  'start_plan_unit11','start_actual_unit11', 'finish_plan_unit11','finish_actual_unit11',
-  'start_plan_unit12','start_actual_unit12', 'finish_plan_unit12','finish_actual_unit12',
-  'start_plan_unit13','start_actual_unit13', 'finish_plan_unit13','finish_actual_unit13',
-  'start_plan_unit14','start_actual_unit14', 'finish_plan_unit14','finish_actual_unit14',
-  'start_plan_unit15','start_actual_unit15', 'finish_plan_unit15','finish_actual_unit15'); //set column field database for datatable orderable
-  var $column_search = array('nama_milstone', 
-  'start_plan_unit1','start_actual_unit1', 'finish_plan_unit1','finish_actual_unit1',
-  'start_plan_unit2','start_actual_unit2', 'finish_plan_unit2','finish_actual_unit2',
-  'start_plan_unit3','start_actual_unit3', 'finish_plan_unit3','finish_actual_unit3',
-  'start_plan_unit4','start_actual_unit4', 'finish_plan_unit4','finish_actual_unit4',
-  'start_plan_unit5','start_actual_unit5', 'finish_plan_unit5','finish_actual_unit5',
-  'start_plan_unit6','start_actual_unit6', 'finish_plan_unit6','finish_actual_unit6',
-  'start_plan_unit7','start_actual_unit7', 'finish_plan_unit7','finish_actual_unit7',
-  'start_plan_unit8','start_actual_unit8', 'finish_plan_unit8','finish_actual_unit8',
-  'start_plan_unit9','start_actual_unit9', 'finish_plan_unit9','finish_actual_unit9',
-  'start_plan_unit10','start_actual_unit10', 'finish_plan_unit10','finish_actual_unit10',
-  'start_plan_unit11','start_actual_unit11', 'finish_plan_unit11','finish_actual_unit11',
-  'start_plan_unit12','start_actual_unit12', 'finish_plan_unit12','finish_actual_unit12',
-  'start_plan_unit13','start_actual_unit13', 'finish_plan_unit13','finish_actual_unit13',
-  'start_plan_unit14','start_actual_unit14', 'finish_plan_unit14','finish_actual_unit14',
-  'start_plan_unit15','start_actual_unit15', 'finish_plan_unit15','finish_actual_unit15'); //set column field database for datatable searchable 
+  var $column_order = array(
+    null, 'nama_milstone',
+    'start_plan_unit1', 'start_actual_unit1', 'finish_plan_unit1', 'finish_actual_unit1',
+    'start_plan_unit2', 'start_actual_unit2', 'finish_plan_unit2', 'finish_actual_unit2',
+    'start_plan_unit3', 'start_actual_unit3', 'finish_plan_unit3', 'finish_actual_unit3',
+    'start_plan_unit4', 'start_actual_unit4', 'finish_plan_unit4', 'finish_actual_unit4',
+    'start_plan_unit5', 'start_actual_unit5', 'finish_plan_unit5', 'finish_actual_unit5',
+    'start_plan_unit6', 'start_actual_unit6', 'finish_plan_unit6', 'finish_actual_unit6',
+    'start_plan_unit7', 'start_actual_unit7', 'finish_plan_unit7', 'finish_actual_unit7',
+    'start_plan_unit8', 'start_actual_unit8', 'finish_plan_unit8', 'finish_actual_unit8',
+    'start_plan_unit9', 'start_actual_unit9', 'finish_plan_unit9', 'finish_actual_unit9',
+    'start_plan_unit10', 'start_actual_unit10', 'finish_plan_unit10', 'finish_actual_unit10',
+    'start_plan_unit11', 'start_actual_unit11', 'finish_plan_unit11', 'finish_actual_unit11',
+    'start_plan_unit12', 'start_actual_unit12', 'finish_plan_unit12', 'finish_actual_unit12',
+    'start_plan_unit13', 'start_actual_unit13', 'finish_plan_unit13', 'finish_actual_unit13',
+    'start_plan_unit14', 'start_actual_unit14', 'finish_plan_unit14', 'finish_actual_unit14',
+    'start_plan_unit15', 'start_actual_unit15', 'finish_plan_unit15', 'finish_actual_unit15'
+  ); //set column field database for datatable orderable
+  var $column_search = array(
+    'nama_milstone',
+    'start_plan_unit1', 'start_actual_unit1', 'finish_plan_unit1', 'finish_actual_unit1',
+    'start_plan_unit2', 'start_actual_unit2', 'finish_plan_unit2', 'finish_actual_unit2',
+    'start_plan_unit3', 'start_actual_unit3', 'finish_plan_unit3', 'finish_actual_unit3',
+    'start_plan_unit4', 'start_actual_unit4', 'finish_plan_unit4', 'finish_actual_unit4',
+    'start_plan_unit5', 'start_actual_unit5', 'finish_plan_unit5', 'finish_actual_unit5',
+    'start_plan_unit6', 'start_actual_unit6', 'finish_plan_unit6', 'finish_actual_unit6',
+    'start_plan_unit7', 'start_actual_unit7', 'finish_plan_unit7', 'finish_actual_unit7',
+    'start_plan_unit8', 'start_actual_unit8', 'finish_plan_unit8', 'finish_actual_unit8',
+    'start_plan_unit9', 'start_actual_unit9', 'finish_plan_unit9', 'finish_actual_unit9',
+    'start_plan_unit10', 'start_actual_unit10', 'finish_plan_unit10', 'finish_actual_unit10',
+    'start_plan_unit11', 'start_actual_unit11', 'finish_plan_unit11', 'finish_actual_unit11',
+    'start_plan_unit12', 'start_actual_unit12', 'finish_plan_unit12', 'finish_actual_unit12',
+    'start_plan_unit13', 'start_actual_unit13', 'finish_plan_unit13', 'finish_actual_unit13',
+    'start_plan_unit14', 'start_actual_unit14', 'finish_plan_unit14', 'finish_actual_unit14',
+    'start_plan_unit15', 'start_actual_unit15', 'finish_plan_unit15', 'finish_actual_unit15'
+  ); //set column field database for datatable searchable 
   var $order = array('id_milstone' => 'desc'); // default order 
 
   public function __construct()
@@ -101,7 +105,7 @@ class Milstone_model extends CI_Model
     if ($_POST['length'] != -1)
       $this->db->limit($_POST['length'], $_POST['start']);
     $query = $this->db->get();
-    return $query->result();
+    return $query->result_array();
   }
 
 
@@ -114,7 +118,24 @@ class Milstone_model extends CI_Model
 
   public function count_all($id_project)
   {
+    $this->db->select('id_project,id_milstone,nama_milstone, 
+    start_plan_unit1,start_actual_unit1, finish_plan_unit1,finish_actual_unit1,
+    start_plan_unit2,start_actual_unit2, finish_plan_unit2,finish_actual_unit2,
+    start_plan_unit3,start_actual_unit3, finish_plan_unit3,finish_actual_unit3,
+    start_plan_unit4,start_actual_unit4, finish_plan_unit4,finish_actual_unit4,
+    start_plan_unit5,start_actual_unit5, finish_plan_unit5,finish_actual_unit5,
+    start_plan_unit6,start_actual_unit6, finish_plan_unit6,finish_actual_unit6,
+    start_plan_unit7,start_actual_unit7, finish_plan_unit7,finish_actual_unit7,
+    start_plan_unit8,start_actual_unit8, finish_plan_unit8,finish_actual_unit8,
+    start_plan_unit9,start_actual_unit9, finish_plan_unit9,finish_actual_unit9,
+    start_plan_unit10,start_actual_unit10, finish_plan_unit10,finish_actual_unit10,
+    start_plan_unit11,start_actual_unit11, finish_plan_unit11,finish_actual_unit11,
+    start_plan_unit12,start_actual_unit12, finish_plan_unit12,finish_actual_unit12,
+    start_plan_unit13,start_actual_unit13, finish_plan_unit13,finish_actual_unit13,
+    start_plan_unit14,start_actual_unit14, finish_plan_unit14,finish_actual_unit14,
+    start_plan_unit15,start_actual_unit15, finish_plan_unit15,finish_actual_unit15');
     $this->db->from($this->table);
+    $this->db->where('id_project', $id_project);
     return $this->db->count_all_results();
   }
 }

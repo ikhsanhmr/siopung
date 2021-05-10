@@ -1978,74 +1978,65 @@ class pmis extends CI_Controller
 	{
 		$id_project = $this->input->get('id_project');
 		$list = $this->milstone_model->get_datatables($id_project);
-		var_dump($id_project);
+		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
+		// var_dump($id_project);
+		$jumlah_mesin = $this->pmis_model->cek_mesin($id_project)['jumlah_mesin'];
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $item) {
 			$no++;
 			$row = array();
 			$row[] = $no;
-			$row[] = $item->nama_milstone;
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit1));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit1));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit1));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit1));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit2));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit2));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit2));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit2));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit3));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit3));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit3));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit3));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit4));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit4));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit4));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit4));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit5));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit5));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit5));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit5));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit6));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit6));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit6));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit6));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit7));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit7));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit7));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit7));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit8));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit8));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit8));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit8));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit9));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit9));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit9));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit9));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit10));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit10));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit10));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit10));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit11));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit11));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit11));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit11));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit12));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit12));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit12));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit12));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit13));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit13));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit13));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit13));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit14));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit14));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit14));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit14));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_plan_unit15));
-			$row[] = date('d-M-Y H:i', strtotime($item->start_actual_unit15));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_plan_unit15));
-			$row[] = date('d-M-Y H:i', strtotime($item->finish_actual_unit15));
+			$row[] = $item["nama_milstone"];
+
+			for ($key = 1; $key <= $jumlah_mesin && $key <= 15; $key++) {
+				$row[] = date('d-M-Y', strtotime($item["start_plan_unit" . $key]));
+				$row[] = date('d-M-Y', strtotime($item['finish_plan_unit' . $key]));
+				$row[] = date('d-M-Y', strtotime($item["start_actual_unit" . $key]));
+				$row[] = date('d-M-Y', strtotime($item["finish_actual_unit" . $key]));
+			}
+
+			if ($dapat_status['status'] == 4) {
+			} else {
+				$row[] = '<td>
+					<input type="hidden" name="id_project" value="' . $item["id_project"] . '">
+					<div class="hidden-sm hidden-xs action-buttons">
+						<a class="green" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/milstone_edit?id_project=' . $item["id_project"] . '&id_milstone=' . $item['id_milstone'] . '">
+							<i class="ace-icon fa fa-pencil bigger-130"></i>
+						</a>
+
+						<a class="red" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/milstone_delete?id_project=' . $item['id_project'] . '&id_milstone=' . $item['id_milstone'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+							<i class="ace-icon fa fa-trash-o bigger-130"></i>
+						</a>
+					</div>
+
+					<div class="hidden-md hidden-lg">
+						<div class="inline pos-rel">
+							<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+								<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+							</button>
+
+							<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+								<li>
+									<a href="#" class="tooltip-success" data-rel="tooltip" title="Edit">
+										<span class="green">
+											<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+
+								<li>
+									<a href="#" class="tooltip-error" data-rel="tooltip" title="Delete">
+										<span class="red">
+											<i class="ace-icon fa fa-trash-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>';
+			};
 
 			$data[] = $row;
 		}
