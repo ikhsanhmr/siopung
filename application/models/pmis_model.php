@@ -896,8 +896,7 @@ LIMIT 0, 6  ");
   }
   function tampil_kontrak_utama($id_project)
   {
-    $get = $this->db->query("SELECT *
-                               FROM kontrak_utama a where a.id_project = $id_project ");
+    $get = $this->db->query("SELECT * FROM kontrak_utama a where a.id_project = $id_project ");
     return $get;
   }
 

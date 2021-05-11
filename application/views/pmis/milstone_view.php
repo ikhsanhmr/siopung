@@ -101,7 +101,6 @@
 	$(document).ready(function() {
 		const params = new URLSearchParams(window.location.search);
 		const id_project = params.get("id_project");
-		console.log(id_project)
 		//datatables
 		var table = $('#dynamic-table-milstone').DataTable({
 
@@ -124,8 +123,6 @@
 				"targets": [0], //first column / numbering column
 				"orderable": false, //set not orderable
 			}, ],
-
 		});
-
 	});
 </script>

@@ -20,6 +20,7 @@ class pmis extends CI_Controller
 		$this->load->model(array('user_model'));
 		$this->load->model(array('project_model'));
 		$this->load->model(array('milstone_model'));
+		$this->load->model(array('kontrak_utama_model'));
 	}
 
 	//Login        
@@ -1979,7 +1980,6 @@ class pmis extends CI_Controller
 		$id_project = $this->input->get('id_project');
 		$list = $this->milstone_model->get_datatables($id_project);
 		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
-		// var_dump($id_project);
 		$jumlah_mesin = $this->pmis_model->cek_mesin($id_project)['jumlah_mesin'];
 		$data = array();
 		$no = $_POST['start'];
@@ -3085,6 +3085,84 @@ class pmis extends CI_Controller
 			$this->load->view('pmis/kontrak_utama_view', $data);
 			$this->load->view('footer');
 		}
+	}
+
+	public function ajax_kontrak_utama()
+	{
+		$id_project = $this->input->get('id_project');
+		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
+		$jumlah_mesin = $this->pmis_model->cek_mesin($id_project)['jumlah_mesin'];
+		$list = $this->kontrak_utama_model->get_datatables($id_project);
+
+		// var_dump($list);
+
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $item) {
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $item['nama_kontrak_utama'];
+			$row[] = $item['pelaksana'];
+			$row[] = $item['nomor_kontrak'];
+			$row[] = $item['jenis_kontrak'];
+			$row[] = $item['tanggal_kontrak'];
+			$row[] = $item['effective_date'];
+			$row[] = $item['nilai_kontrak'];
+
+			for ($key = 1; $key <= $jumlah_mesin && $key <= 15; $key++) {
+				$row[] = date('d-M-Y', strtotime($item["tanggal_berakhir" . $key]));
+			}
+
+			if ($dapat_status['status'] == 4) {
+			} else {
+				$row[] = '<td>
+					<input type="hidden" name="id_project" value="' . $item['id_project'] . '">
+					<div class="hidden-sm hidden-xs action-buttons">
+						<a class="green" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/kontrak_utama_edit?id_project=' . $item['id_project'] . '&id_kontrak_utama=' . $item['id_kontrak_utama'] . '">
+							<i class="ace-icon fa fa-pencil bigger-130"></i>
+						</a>
+						<a class="red" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/kontrak_utama_delete?id_project=' . $item['id_project'] . '&id_kontrak_utama=' . $item['id_kontrak_utama'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+							<i class="ace-icon fa fa-trash-o bigger-130"></i>
+						</a>
+					</div>
+
+					<div class="hidden-md hidden-lg">
+						<div class="inline pos-rel">
+							<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+								<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+								<li>
+									<a href="' . base_url() . 'pmis/kontrak_utama_edit?id_project=' . $item['id_project'] . '&id_kontrak_utama=' . $item['id_kontrak_utama'] . '" class="tooltip-success" data-rel="tooltip" title="Edit">
+										<span class="green">
+											<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+								<li>
+									<a href="' . base_url() . 'pmis/kontrak_utama_delete?id_project=' . $item['id_project'] . '&id_kontrak_utama=' . $item['id_kontrak_utama'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);" class="tooltip-error" data-rel="tooltip" title="Delete">
+										<span class="red">
+											<i class="ace-icon fa fa-trash-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>';
+			}
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->kontrak_utama_model->count_all($id_project),
+			"recordsFiltered" => $this->kontrak_utama_model->count_filtered($id_project),
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
 	}
 
 	public function kontrak_utama_add()
