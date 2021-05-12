@@ -111,7 +111,7 @@
 							"dataSrc": 'data'
 						},
 
-						"searching": true,
+						"searching": false,
 
 						//Set column definition initialisation properties.
 						"columnDefs": [{

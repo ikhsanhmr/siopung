@@ -107,7 +107,7 @@
 					"type": "POST",
 				},
 
-				"searching": true,
+				"searching": false,
 
 				//Set column definition initialisation properties.
 				"columnDefs": [{
