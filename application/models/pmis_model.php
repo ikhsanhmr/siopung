@@ -932,11 +932,9 @@ LIMIT 0, 6  ");
   }
   function tampil_kontrak_supervisi($id_project)
   {
-    $get = $this->db->query("SELECT *
-                               FROM kontrak_supervisi a where a.id_project = $id_project ");
+    $get = $this->db->query("SELECT * FROM kontrak_supervisi a where a.id_project = $id_project ");
     return $get;
   }
-
 
   public function tambah_data_kontrak_supervisi($data)
   {
