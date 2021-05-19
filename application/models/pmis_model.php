@@ -1046,7 +1046,7 @@ LIMIT 0, 6  ");
     $get = $this->db->query("SELECT 
 								  * 
 								FROM
-								  progress a 
+								   a 
 								WHERE a.id_project = $id_project
 								ORDER BY tahun * 1 DESC,
 								  bulan * 1 DESC");
@@ -1087,10 +1087,7 @@ LIMIT 0, 6  ");
   function tampil_issue($id_project)
   {
     $get = $this->db->query("SELECT a.id_project,
-		(select nama_project from project where id_project = a.id_project) as nama_project,
-		
-		a.id_issue,a.issue_description, a.status, a.target_resolved_date,a.action
-                               FROM issue a where a.id_project = $id_project ");
+		(select nama_project from project where id_project = a.id_project) as nama_project, a.id_issue,a.issue_description, a.status, a.target_resolved_date,a.action FROM issue a where a.id_project = $id_project ");
     return $get;
   }
 
@@ -1131,7 +1128,7 @@ LIMIT 0, 6  ");
 		(select nama_project from project where id_project = a.id_project) as nama_project,
 		
 		a.id_daily_activity,a.date_activity, a.status, a.milstone, a.pekerjaan, a.kendala, a.tindak_lanjut
-                               FROM daily_activity a where a.id_project = $id_project order by id_daily_activity desc");
+    FROM daily_activity a where a.id_project = $id_project order by id_daily_activity desc");
     return $get;
   }
 

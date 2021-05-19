@@ -23,6 +23,10 @@ class pmis extends CI_Controller
 		$this->load->model(array('kontrak_utama_model'));
 		$this->load->model(array('kontrak_supervisi_model'));
 		$this->load->model(array('kontrak_engineering_model'));
+		$this->load->model(array('kontrak_lokal_model'));
+		$this->load->model(array('progress_model'));
+		$this->load->model(array('issue_model'));
+		$this->load->model(array('daily_activity_model'));
 	}
 
 	//Login        
@@ -421,8 +425,6 @@ class pmis extends CI_Controller
 			$this->load->view('footer');
 		}
 	}
-
-
 
 	public function ajax_list()
 	{
@@ -4558,6 +4560,78 @@ class pmis extends CI_Controller
 		}
 	}
 
+	public function ajax_kontrak_lokal()
+	{
+		$id_project = $this->input->get('id_project');
+		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
+		$list = $this->kontrak_lokal_model->get_datatables($id_project);
+
+		// var_dump($list);
+
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $item) {
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $item['nama_kontrak_lokal'];
+			$row[] = $item['pelaksana'];
+			$row[] = $item['nomor'];
+			$row[] = $item['tanggal_ttd'];
+			$row[] = $item['nilai_kontrak'];
+			$row[] = date('d-M-Y', strtotime($item["tanggal_berakhir"]));
+
+			if ($dapat_status['status'] == 4) {
+			} else {
+				$row[] = '<td>
+					<input type="hidden" name="id_project" value="' . $item['id_project'] . '">
+					<div class="hidden-sm hidden-xs action-buttons">
+						<a class="green" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/kontrak_lokal_edit?id_project=' . $item['id_project'] . '&id_kontrak_lokal=' . $item['id_kontrak_lokal'] . '">
+							<i class="ace-icon fa fa-pencil bigger-130"></i>
+						</a>
+						<a class="red" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/kontrak_lokal_delete?id_project=' . $item['id_project'] . '&id_kontrak_lokal=' . $item['id_kontrak_lokal'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+							<i class="ace-icon fa fa-trash-o bigger-130"></i>
+						</a>
+					</div>
+
+					<div class="hidden-md hidden-lg">
+						<div class="inline pos-rel">
+							<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+								<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+								<li>
+									<a href="' . base_url() . 'pmis/kontrak_lokal_edit?id_project=' . $item['id_project'] . '&id_kontrak_lokal=' . $item['id_kontrak_lokal'] . '" class="tooltip-success" data-rel="tooltip" title="Edit">
+										<span class="green">
+											<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+								<li>
+									<a href="' . base_url() . 'pmis/kontrak_lokal_delete?id_project=' . $item['id_project'] . '&id_kontrak_lokal=' . $item['id_kontrak_lokal'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);" class="tooltip-error" data-rel="tooltip" title="Delete">
+										<span class="red">
+											<i class="ace-icon fa fa-trash-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>';
+			}
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->kontrak_lokal_model->count_all($id_project),
+			"recordsFiltered" => $this->kontrak_lokal_model->count_filtered($id_project),
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
+	}
+
 	public function kontrak_lokal_add()
 	{
 		$data['nama_admin'] = $this->session->userdata('nama_admin');
@@ -5618,7 +5692,6 @@ class pmis extends CI_Controller
 			$data['menu8_unallocated'] = $this->pmis_model->get_module8_unallocated();
 			$data['dapat_status'] = $this->pmis_model->dapat_status($this->session->userdata('status'));
 			$id_project = $this->input->get('id_project');
-			$data['progress'] = $this->pmis_model->tampil_progress($id_project);
 			$this->data['title'] = 'Beranda :: ';
 			$this->load->view('header', $this->data);
 			$this->load->view('sidebar', $data);
@@ -5651,13 +5724,110 @@ class pmis extends CI_Controller
 			$data['menu8_unallocated'] = $this->pmis_model->get_module8_unallocated();
 			$data['dapat_status'] = $this->pmis_model->dapat_status($this->session->userdata('status'));
 			$id_project = $this->input->get('id_project');
-			$data['progress'] = $this->pmis_model->tampil_progress($id_project);
 			$this->data['title'] = 'Beranda :: ';
 			$this->load->view('header', $this->data);
 			$this->load->view('sidebar_upp', $data);
 			$this->load->view('pmis/progress_view', $data);
 			$this->load->view('footer');
 		}
+	}
+
+	public function ajax_progress()
+	{
+		$id_project = $this->input->get('id_project');
+		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
+		$list = $this->progress_model->get_datatables($id_project);
+
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $item) {
+
+			if ($item['bulan'] == '1') {
+				$bulan = 'Januari';
+			} else if ($item['bulan'] == '2') {
+				$bulan = 'Februari';
+			} else if ($item['bulan'] == '3') {
+				$bulan = 'Maret';
+			} else if ($item['bulan'] == '4') {
+				$bulan = 'April';
+			} else if ($item['bulan'] == '5') {
+				$bulan = 'Mei';
+			} else if ($item['bulan'] == '6') {
+				$bulan = 'Juni';
+			} else if ($item['bulan'] == '7') {
+				$bulan = 'Juli';
+			} else if ($item['bulan'] == '8') {
+				$bulan = 'Agustus';
+			} else if ($item['bulan'] == '9') {
+				$bulan = 'September';
+			} else if ($item['bulan'] == '10') {
+				$bulan = 'Oktober';
+			} else if ($item['bulan'] == '11') {
+				$bulan = 'November';
+			} else if ($item['bulan'] == '12') {
+				$bulan = 'Desember';
+			}
+
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $bulan;
+			$row[] = $item['tahun'];
+			$row[] = $item['individual_e'];
+			$row[] = $item['individual_p'];
+			$row[] = $item['individual_c'];
+			$row[] = $item['total_plan'];
+			$row[] = $item['total'];
+
+			if ($dapat_status['status'] == 4) {
+			} else {
+				$row[] = '<td>
+					<input type="hidden" name="id_project" value="' . $item['id_project'] . '">
+					<div class="hidden-sm hidden-xs action-buttons">
+						<a class="green" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/progress_edit?id_project=' . $item['id_project'] . '&id_progress=' . $item['id_progress'] . '">
+							<i class="ace-icon fa fa-pencil bigger-130"></i>
+						</a>
+						<a class="red" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/progress_delete?id_project=' . $item['id_project'] . '&id_progress=' . $item['id_progress'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+							<i class="ace-icon fa fa-trash-o bigger-130"></i>
+						</a>
+					</div>
+
+					<div class="hidden-md hidden-lg">
+						<div class="inline pos-rel">
+							<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+								<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+								<li>
+									<a href="' . base_url() . 'pmis/progress_edit?id_project=' . $item['id_project'] . '&id_progress=' . $item['id_progress'] . '" class="tooltip-success" data-rel="tooltip" title="Edit">
+										<span class="green">
+											<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+								<li>
+									<a href="' . base_url() . 'pmis/progress_delete?id_project=' . $item['id_project'] . '&id_progress=' . $item['id_progress'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);" class="tooltip-error" data-rel="tooltip" title="Delete">
+										<span class="red">
+											<i class="ace-icon fa fa-trash-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>';
+			}
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->progress_model->count_all($id_project),
+			"recordsFiltered" => $this->progress_model->count_filtered($id_project),
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
 	}
 
 	public function progress_add()
@@ -5940,7 +6110,6 @@ class pmis extends CI_Controller
 			$data['menu8_unallocated'] = $this->pmis_model->get_module8_unallocated();
 			$data['dapat_status'] = $this->pmis_model->dapat_status($this->session->userdata('status'));
 			$id_project = $this->input->get('id_project');
-			$data['issue'] = $this->pmis_model->tampil_issue($id_project);
 			$this->data['title'] = 'Beranda :: ';
 			$this->load->view('header', $this->data);
 			$this->load->view('sidebar', $data);
@@ -5973,13 +6142,82 @@ class pmis extends CI_Controller
 			$data['menu8_unallocated'] = $this->pmis_model->get_module8_unallocated();
 			$data['dapat_status'] = $this->pmis_model->dapat_status($this->session->userdata('status'));
 			$id_project = $this->input->get('id_project');
-			$data['issue'] = $this->pmis_model->tampil_issue($id_project);
 			$this->data['title'] = 'Beranda :: ';
 			$this->load->view('header', $this->data);
 			$this->load->view('sidebar_upp', $data);
 			$this->load->view('pmis/issue_view', $data);
 			$this->load->view('footer');
 		}
+	}
+
+	public function ajax_issue()
+	{
+		$id_project = $this->input->get('id_project');
+		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
+		$list = $this->issue_model->get_datatables($id_project);
+
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $item) {
+
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = $item['nama_project'];
+			$row[] = $item['issue_description'];
+			$row[] = $item['action'];
+			$row[] = $item['target_resolved_date'];
+			$row[] = $item['status'];
+
+			if ($dapat_status['status'] == 4) {
+			} else {
+				$row[] = '<td>
+					<input type="hidden" name="id_project" value="' . $item['id_project'] . '">
+					<div class="hidden-sm hidden-xs action-buttons">
+						<a class="green" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/issue_edit?id_project=' . $item['id_project'] . '&id_issue=' . $item['id_issue'] . '">
+							<i class="ace-icon fa fa-pencil bigger-130"></i>
+						</a>
+						<a class="red" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/issue_delete?id_project=' . $item['id_project'] . '&id_issue=' . $item['id_issue'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+							<i class="ace-icon fa fa-trash-o bigger-130"></i>
+						</a>
+					</div>
+
+					<div class="hidden-md hidden-lg">
+						<div class="inline pos-rel">
+							<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+								<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+								<li>
+									<a href="' . base_url() . 'pmis/issue_edit?id_project=' . $item['id_project'] . '&id_issue=' . $item['id_issue'] . '" class="tooltip-success" data-rel="tooltip" title="Edit">
+										<span class="green">
+											<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+								<li>
+									<a href="' . base_url() . 'pmis/issue_delete?id_project=' . $item['id_project'] . '&id_issue=' . $item['id_issue'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);" class="tooltip-error" data-rel="tooltip" title="Delete">
+										<span class="red">
+											<i class="ace-icon fa fa-trash-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>';
+			}
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->issue_model->count_all($id_project),
+			"recordsFiltered" => $this->issue_model->count_filtered($id_project),
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
 	}
 
 	public function issue_add()
@@ -6300,7 +6538,6 @@ class pmis extends CI_Controller
 			$data['tampilkan_proyek_pln_pltutenayan'] = $this->pmis_model->tampilkan_proyek_pln_pltutenayan();
 			$data['tampilkan_proyek_pln_pltmgarun'] = $this->pmis_model->tampilkan_proyek_pln_pltmgarun();
 			$data['tampilkan_proyek_pln_pltubabel3'] = $this->pmis_model->tampilkan_proyek_pln_pltubabel3();
-			$data['daily_activity'] = $this->pmis_model->tampil_daily_activity($id_project);
 			$this->data['title'] = 'Beranda :: ';
 			$this->load->view('header', $this->data);
 			$this->load->view('sidebar', $data);
@@ -6338,14 +6575,83 @@ class pmis extends CI_Controller
 			$data['tampilkan_proyek_pln_pltubabel3'] = $this->pmis_model->tampilkan_proyek_pln_pltubabel3();
 
 			$data['dapat_status'] = $this->pmis_model->dapat_status($this->session->userdata('status'));
-			$id_project = $this->input->get('id_project');
-			$data['daily_activity'] = $this->pmis_model->tampil_daily_activity($id_project);
 			$this->data['title'] = 'Beranda :: ';
 			$this->load->view('header', $this->data);
 			$this->load->view('sidebar_upp', $data);
 			$this->load->view('pmis/daily_activity_view', $data);
 			$this->load->view('footer_project');
 		}
+	}
+
+	public function ajax_daily_activity()
+	{
+		$id_project = $this->input->get('id_project');
+		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
+		$list = $this->daily_activity_model->get_datatables($id_project);
+
+		$data = array();
+		$no = $_POST['start'];
+		foreach ($list as $item) {
+
+			$no++;
+			$row = array();
+			$row[] = $no;
+			$row[] = date('d M Y', strtotime($item['date_activity']));
+			$row[] = $item['milstone'];
+			$row[] = $item['pekerjaan'];
+			$row[] = $item['kendala'];
+			$row[] = $item['tindak_lanjut'];
+			$row[] = $item['status'] == 1 ? "On Progress" : "Selesai";
+
+			if ($dapat_status['status'] == 4) {
+			} else {
+				$row[] = '<td>
+					<input type="hidden" name="id_project" value="' . $item['id_project'] . '">
+					<div class="hidden-sm hidden-xs action-buttons">
+						<a class="green" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/daily_activity_edit?id_project=' . $item['id_project'] . '&id_daily_activity=' . $item['id_daily_activity'] . '">
+							<i class="ace-icon fa fa-pencil bigger-130"></i>
+						</a>
+						<a class="red" value="' . $item['id_project'] . '" href="' . base_url() . 'pmis/daily_activity_delete?id_project=' . $item['id_project'] . '&id_daily_activity=' . $item['id_daily_activity'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);">
+							<i class="ace-icon fa fa-trash-o bigger-130"></i>
+						</a>
+					</div>
+
+					<div class="hidden-md hidden-lg">
+						<div class="inline pos-rel">
+							<button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
+								<i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+								<li>
+									<a href="' . base_url() . 'pmis/daily_activity_edit?id_project=' . $item['id_project'] . '&id_daily_activity=' . $item['id_daily_activity'] . '" class="tooltip-success" data-rel="tooltip" title="Edit">
+										<span class="green">
+											<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+								<li>
+									<a href="' . base_url() . 'pmis/daily_activity_delete?id_project=' . $item['id_project'] . '&id_daily_activity=' . $item['id_daily_activity'] . '" onclick="return confirm(`Anda Yakin Menghapus Data Ini?`);" class="tooltip-error" data-rel="tooltip" title="Delete">
+										<span class="red">
+											<i class="ace-icon fa fa-trash-o bigger-120"></i>
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>';
+			}
+			$data[] = $row;
+		}
+
+		$output = array(
+			"draw" => $_POST['draw'],
+			"recordsTotal" => $this->daily_activity_model->count_all($id_project),
+			"recordsFiltered" => $this->daily_activity_model->count_filtered($id_project),
+			"data" => $data,
+		);
+		//output to json format
+		echo json_encode($output);
 	}
 
 
