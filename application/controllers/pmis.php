@@ -3096,7 +3096,7 @@ class pmis extends CI_Controller
 	{
 		$id_project = $this->input->get('id_project');
 		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
-		$jumlah_mesin = $this->pmis_model->cek_mesin($id_project)['jumlah_mesin'];
+		$jumlah_mesin = $this->pmis_model->cek_mesin($id_project);
 		$list = $this->kontrak_utama_model->get_datatables($id_project);
 
 		// var_dump($list);
@@ -3115,7 +3115,7 @@ class pmis extends CI_Controller
 			$row[] = $item['effective_date'];
 			$row[] = $item['nilai_kontrak'];
 
-			for ($key = 1; $key <= $jumlah_mesin && $key <= 15; $key++) {
+			for ($key = 1; $key <= $jumlah_mesin['jumlah_mesin'] && $key <= 15; $key++) {
 				$row[] = date('d-M-Y', strtotime($item["tanggal_berakhir" . $key]));
 			}
 
@@ -4133,7 +4133,6 @@ class pmis extends CI_Controller
 	{
 		$id_project = $this->input->get('id_project');
 		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
-		$jumlah_mesin = $this->pmis_model->cek_mesin($id_project)['jumlah_mesin'];
 		$list = $this->kontrak_engineering_model->get_datatables($id_project);
 
 		// var_dump($list);
