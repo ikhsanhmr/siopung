@@ -1155,11 +1155,8 @@ LIMIT 0, 6  ");
 
   function dapat_status($status)
   {
-    $get = $this->db->query("SELECT 
-								  status 
-								FROM
-								  user a
-								WHERE a.status =$status LIMIT 1");
+    $get = $this->db->query("SELECT status FROM user a WHERE a.status=$status LIMIT 1");
+
     if ($get->num_rows() == 1) {
       return $get->row_array();
     }

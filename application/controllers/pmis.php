@@ -1984,7 +1984,8 @@ class pmis extends CI_Controller
 		$id_project = $this->input->get('id_project');
 		$list = $this->milstone_model->get_datatables($id_project);
 		$dapat_status = $this->pmis_model->dapat_status($this->session->userdata('status'));
-		$jumlah_mesin = $this->pmis_model->cek_mesin($id_project)['jumlah_mesin'];
+		$jumlah_mesin = $this->pmis_model->cek_mesin($id_project);
+
 		$data = array();
 		$no = $_POST['start'];
 		foreach ($list as $item) {
@@ -1993,7 +1994,7 @@ class pmis extends CI_Controller
 			$row[] = $no;
 			$row[] = $item["nama_milstone"];
 
-			for ($key = 1; $key <= $jumlah_mesin && $key <= 15; $key++) {
+			for ($key = 1; $key <= $jumlah_mesin['jumlah_mesin'] && $key <= 15; $key++) {
 				$row[] = date('d-M-Y', strtotime($item["start_plan_unit" . $key]));
 				$row[] = date('d-M-Y', strtotime($item['finish_plan_unit' . $key]));
 				$row[] = date('d-M-Y', strtotime($item["start_actual_unit" . $key]));
